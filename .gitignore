@@ -1,0 +1,12 @@
+# IDE Garbage
+.idea
+
+# Rust stuff
+/target
+**/*.rs.bk
+Cargo.lock
+/app/chip8-wasm/target
+
+# Wasm stuff
+*.wasm
+*.wat

@@ -1,0 +1,19 @@
+[package]
+name = "chip8_wasm"
+version = "1.0.0"
+authors = ["Thomas Hiscock <thomashk000@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Select no_std version
+chip8 = { path = "../../packages/chip8", features = [] }
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"
+lto = true

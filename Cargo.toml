@@ -1,0 +1,12 @@
+[workspace]
+members = [
+    "packages/chip8",
+    "app/chip8-emu",
+]
+exclude = ["app/chip8-wasm"]
+
+[profile.release]
+# debug = true
+# debug-assertions = true
+lto = true
+codegen-units = 1

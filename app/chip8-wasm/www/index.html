@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chip8 Emulator</title>
+    <style>
+        /* Avoid blurry rendering when upscaling canvas */
+        canvas {
+            image-rendering: -moz-crisp-edges; /* Firefox */
+            image-rendering: -webkit-crisp-edges; /* Webkit (Safari) */
+            image-rendering: pixelated; /* Chrome */
+        }
+    </style>
+    <script type="module" src="/index.js"></script>
+</head>
+<body>
+<h1>Chip 8 Emulator</h1>
+<noscript>This page contains WebAssembly and Javascript content, please enable
+    Javascript in your browser.
+</noscript>
+<p>This page shows a demo of a Chip8 emulator written in Rust and running in
+    the browser thanks to WebAssembly.</p>
+<div id="emulator">
+    <div id="emu-control">
+        <span class='label'>ROM:</span>
+        <select id='roms'></select>
+        <button id='run'>Load</button>
+        <button id='reset'>Reset</button>
+    </div>
+    <canvas id="demo-canvas" style="width:512px; height: 256px"></canvas>
+</div>
+
+</body>
+</html>
