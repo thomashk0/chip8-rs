@@ -11,8 +11,7 @@ Features:
 
 ## TODOs
 
-* Cargo clippy
-* C bindings + Qt Gui (as a replacement for the chip8emu)?
+* C bindings + Qt Gui (as a replacement for the chip8-emu)?
 
 
 ## License

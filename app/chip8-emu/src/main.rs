@@ -202,7 +202,6 @@ pub fn run_app(opts: &CliOpts) -> Result<i32, Box<dyn std::error::Error>> {
 
 fn main() {
     let opt = CliOpts::from_args();
-    println!("{:?}", opt);
     println!("Chip 8 Emulator\n2020, Thomas Hiscock\n");
     match run_app(&opt) {
         Ok(x) => {

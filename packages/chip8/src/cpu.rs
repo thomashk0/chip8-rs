@@ -226,7 +226,7 @@ impl Chip8Cpu {
             reg_i: 0,
             sp: 0,
             stack: [0; 16],
-            rng: Pcg32::new(),
+            rng: Pcg32::default(),
             cycles: 0,
         }
     }
@@ -336,7 +336,7 @@ impl Chip8Cpu {
                 self.reg_i = self.reg_i.wrapping_add(self.read_gpr(r) as u16);
             }
             Insn::RndAnd(r, value) => {
-                let rnd = self.rng.next() as u8;
+                let rnd = self.rng.generate() as u8;
                 self.write_gpr(r, rnd & value);
             }
             Insn::DrawSprite(rx, ry, n) => {
@@ -408,7 +408,7 @@ impl Chip8Cpu {
                 }
             }
         }
-        return Ok(None);
+        Ok(None)
     }
 
     pub fn tick(&mut self, periph: &mut Chip8Peripherals) -> Result<(), CpuError> {

@@ -9,20 +9,22 @@ pub struct Pcg32 {
     inc: u64,
 }
 
-impl Pcg32 {
-    pub fn new() -> Self {
+impl Default for Pcg32 {
+    fn default() -> Self {
         Pcg32 { state: 0, inc: 0 }
     }
+}
 
+impl Pcg32 {
     pub fn reset(&mut self, state: u64, inc: u64) {
         self.state = 0;
         self.inc = (Wrapping(inc) << 1).0 | 1;
-        self.next();
+        self.generate();
         self.state = self.state.wrapping_add(state);
-        self.next();
+        self.generate();
     }
 
-    pub fn next(&mut self) -> u32 {
+    pub fn generate(&mut self) -> u32 {
         const DEFAULT_MULT: W64 = Wrapping(0x5851_f42d_4c95_7f2d);
         let old_state = Wrapping(self.state);
         self.state = (old_state * DEFAULT_MULT + Wrapping(self.inc)).0;

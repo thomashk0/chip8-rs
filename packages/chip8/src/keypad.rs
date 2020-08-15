@@ -31,6 +31,6 @@ impl Keypad {
                 return Some(i);
             }
         }
-        return None;
+        None
     }
 }
