@@ -225,3 +225,15 @@ impl Scene {
         }
     }
 }
+
+
+impl Drop for Scene {
+    fn drop(&mut self) {
+        let buffers = [self.vbo, self.ebo];
+        unsafe {
+            gl::DeleteVertexArrays(1, &self.vao as *const GLuint);
+            gl::DeleteBuffers(2, buffers.as_ptr());
+            gl::DeleteTextures(1, &self.texture as *const GLuint);
+        }
+    }
+}
