@@ -1,4 +1,23 @@
+function loadRomList() {
+    fetch("roms/index.json")
+        .then(response => response.json())
+        .then(obj => {
+            const romList = document.getElementById("roms");
+            console.log(obj);
+            for (var key in obj) {
+                const name = obj[key]["short"];
+                const opt = document.createElement('option')
+                opt.value = key
+                opt.text = name
+                romList.options.add(opt)
+                // romList.append(`<option value='${key}'>${name}</option>`);
+            }
+        });
+}
+
 async function init() {
+    loadRomList();
+
     const keymap = {
         "0": 0,
         "1": 1,
@@ -28,6 +47,25 @@ async function init() {
     canvas.width = canvas_w;
     canvas.height = canvas_h;
 
+    // obtain the various memory sections
+    const chip8Memory = new Uint8Array(
+        exports.memory.buffer,
+        exports.chip8_memory(),
+        4096
+    );
+
+    const loadRom = rom =>
+        fetch(`roms/${rom}`)
+            .then(i => i.arrayBuffer())
+            .then(buffer => {
+                // write the ROM to memory
+                const rom = new DataView(buffer, 0, buffer.byteLength);
+                for (var k = 0; k < rom.byteLength; k++) {
+                    chip8Memory[k] = rom.getUint8(k);
+                }
+                exports.chip8_reset();
+            });
+
     const framebuffer = exports.chip8_fb();
     const image = new ImageData(
         new Uint8ClampedArray(
@@ -53,9 +91,15 @@ async function init() {
             exports.chip8_key_up(keymap[key]);
         }
     });
+
     const runButton = document.getElementById("reset");
     runButton.addEventListener("click", () => {
+        console.log('resetting chip8 emulator');
         exports.chip8_reset();
+    });
+    document.getElementById("roms").addEventListener("change", e => {
+        console.log(`loading rom '${e.target.value}'`);
+        loadRom(e.target.value);
     });
 
     const ctx = canvas.getContext("2d");

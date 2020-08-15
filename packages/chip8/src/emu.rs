@@ -65,7 +65,7 @@ pub struct Chip8Emulator {
     periph_hz: u32,
     cpu: Chip8Cpu,
     periph: Chip8Peripherals,
-    sim_ms: u32
+    sim_ms: u32,
 }
 
 impl Chip8Emulator {
@@ -75,7 +75,7 @@ impl Chip8Emulator {
             cpu: Chip8Cpu::new(0x200),
             periph_hz: 60,
             periph: Chip8Peripherals::new(),
-            sim_ms: 0
+            sim_ms: 0,
         }
     }
 
