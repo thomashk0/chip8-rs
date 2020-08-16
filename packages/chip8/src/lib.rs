@@ -7,6 +7,6 @@ pub mod emu;
 pub mod utils;
 
 pub use cpu::{Insn, Chip8Cpu};
-pub use emu::{Chip8Emulator, Chip8Peripherals};
+pub use emu::{Chip8Emulator, Chip8Peripherals, CHIP8_PERIPH_HZ};
 pub use screen::{Screen, Chip8Fb, CHIP8_FB_W, CHIP8_FB_H};
 pub use utils::Pcg32;

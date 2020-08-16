@@ -14,9 +14,10 @@
             margin-right: auto;
         }
 
-        #emu-control {
+        #emulator-control {
             margin: auto;
-            width: 50%;
+            margin-top: 2rem;
+            width: 70%;
             display: block;
         }
 
@@ -43,12 +44,24 @@
     <a href="https://github.com/thomashk0/chip8-rs">Github</a>.</p>
 
 <div id="emulator">
-    <div id="emu-control">
-        <span class='label'>ROM:</span>
-        <select id='roms'></select>
+    <canvas id="demo-canvas" style="width:512px; height: 256px"></canvas>
+
+    <div id="emulator-control">
+        <label for="chip8-rom">ROM:
+            <select id="chip8-rom"></select>
+        </label>
+        <br>
+        <label for="chip8-cpuhz">CPU Frequency:
+            <select id="chip8-cpuhz">
+                <option value="600">600 Hz (x1)</option>
+                <option value="1200">1200 Hz (x2)</option>
+                <option value="2400">2400 Hz (x4)</option>
+                <option value="4800">4800 Hz (x8)</option>
+            </select>
+        </label>
+        <br>
         <button id='reset'>Reset</button>
     </div>
-    <canvas id="demo-canvas" style="width:512px; height: 256px"></canvas>
 </div>
 
 </body>

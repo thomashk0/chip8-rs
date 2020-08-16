@@ -12,7 +12,10 @@ Features:
 ## TODOs
 
 * C bindings + Qt Gui (as a replacement for the chip8-emu)?
-
+* WASM:
+    * Configurable keybindings
+    * Show CPU state
+    * A bit of retro styling?
 
 ## License
 

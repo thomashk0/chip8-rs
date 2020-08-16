@@ -4,9 +4,9 @@
 use core::mem::MaybeUninit;
 use core::panic::PanicInfo;
 
-use chip8::{CHIP8_FB_W, CHIP8_FB_H, Chip8Emulator, Chip8Fb};
+use chip8::{CHIP8_FB_W, CHIP8_FB_H, Chip8Emulator, Chip8Fb, CHIP8_PERIPH_HZ};
 
-const EMU_CPU_HZ: u32 = 600;
+static mut EMU_CPU_HZ: u32 = 600;
 
 // NOTE: the lower part of the memory is supposed to be reserved to the emulator
 const CHIP8_MEM_SIZE: usize = 4096 - 0x200;
@@ -72,6 +72,17 @@ pub unsafe extern fn chip8_fb_height() -> u32 {
 #[no_mangle]
 pub unsafe extern fn chip8_memory() -> &'static [u8; CHIP8_MEM_SIZE] {
     &MEMORY_BUFF
+}
+
+#[no_mangle]
+pub unsafe extern fn chip8_set_cpu_hz(hz: u32) -> i32 {
+    let emu = &mut *EMULATOR.as_mut_ptr();
+    if hz < CHIP8_PERIPH_HZ {
+        return -1;
+    }
+    EMU_CPU_HZ = hz;
+    emu.set_cpu_hz(hz);
+    0
 }
 
 #[panic_handler]

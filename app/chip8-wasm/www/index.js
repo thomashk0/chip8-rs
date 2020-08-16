@@ -2,7 +2,7 @@ function loadRomList() {
     fetch("roms/index.json")
         .then(response => response.json())
         .then(obj => {
-            const romList = document.getElementById("roms");
+            const romList = document.getElementById("chip8-rom");
             console.log(obj);
             for (var key in obj) {
                 const name = obj[key]["name"];
@@ -96,9 +96,12 @@ async function init() {
         console.log('resetting chip8 emulator');
         exports.chip8_reset();
     });
-    document.getElementById("roms").addEventListener("change", e => {
+    document.getElementById("chip8-rom").addEventListener("change", e => {
         console.log(`loading rom '${e.target.value}'`);
         loadRom(e.target.value);
+    });
+    document.getElementById("chip8-cpuhz").addEventListener("change", e => {
+        exports.chip8_set_cpu_hz(parseInt(e.target.value));
     });
 
     const ctx = canvas.getContext("2d");

@@ -18,6 +18,9 @@ impl Keypad {
         self.keystate &= !(1 << key as u32);
     }
 
+    /// Reset the keystate (all keys unpressed)
+    pub fn clear(&mut self) { self.keystate = 0; }
+
     pub fn key_state(&self, key: u8) -> u8 {
         (self.keystate >> key as u32) as u8 & 1
     }

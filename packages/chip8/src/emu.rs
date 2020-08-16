@@ -3,6 +3,8 @@ use crate::screen::Screen;
 use crate::keypad::Keypad;
 use crate::cpu::CpuError;
 
+pub const CHIP8_PERIPH_HZ : u32 = 60;
+
 const SPRITE_DATA: [u8; 80] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0,   // 0
     0x20, 0x60, 0x20, 0x20, 0x70,   // 1
@@ -86,6 +88,11 @@ impl Chip8Emulator {
     pub fn peripherals_mut(&mut self) -> &mut Chip8Peripherals {
         &mut self.periph
     }
+
+    pub fn set_cpu_hz(&mut self, hz: u32) {
+        self.cpu_hz = hz
+    }
+
     pub fn set_cpu_rng_seed(&mut self, seed: u64) {
         self.cpu.set_rng_seed(seed);
     }
@@ -114,7 +121,7 @@ impl Chip8Emulator {
             for _ in 0..cpu_steps {
                 cpu.tick(periph)?;
                 t += periph_hz;
-                if t > self.cpu_hz {
+                if t >= self.cpu_hz {
                     periph.tick();
                     t -= self.cpu_hz;
                 }
