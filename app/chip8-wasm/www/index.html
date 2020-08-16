@@ -8,19 +8,6 @@
             font-family: "DejaVu Sans Mono", monospace;
         }
 
-        body {
-            max-width: 40rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        #emulator-control {
-            margin: auto;
-            margin-top: 2rem;
-            width: 70%;
-            display: block;
-        }
-
         canvas {
             /* Avoid blurry rendering when upscaling canvas */
             image-rendering: -moz-crisp-edges; /* Firefox */
@@ -31,17 +18,53 @@
             display: block;
             border: 3px solid #f861c4;
         }
+
+        em {
+            color: magenta;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2::before {
+            content: '# ';
+            color: #4e7495;
+        }
+
+        body {
+            max-width: 40rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #emulator-control {
+            margin: 2rem auto auto;
+            width: 70%;
+            display: block;
+        }
+
     </style>
     <script type="module" src="/index.js"></script>
 </head>
 <body>
 <h1>Chip 8 Emulator</h1>
+
 <noscript>This page contains WebAssembly and Javascript content, please enable
     Javascript in your browser.
 </noscript>
-<p>This page shows a demo of a Chip8 emulator written in Rust and running in the
-    browser thanks to WebAssembly. The code running this demo is available on
+
+<h2>Usage</h2>
+<p>This page shows a demo of a Chip8 emulator written in Rust and compiled to
+    WebAssembly. The code running this demo is available
+    on
     <a href="https://github.com/thomashk0/chip8-rs">Github</a>.</p>
+<p>To play, just <em>select a ROM</em> in the menu below.
+    The <a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.3">Chip8
+        Keypad</a> is mapped directly to keys <em>0 to 9 and A to F</em>.
+    Feel free to raise the CPU frequency if the game seems too slow! Enjoy
+    :)
+</p>
 
 <div id="emulator">
     <canvas id="demo-canvas" style="width:512px; height: 256px"></canvas>
@@ -63,6 +86,21 @@
         <button id='reset'>Reset</button>
     </div>
 </div>
+
+<h2>About</h2>
+
+<ul>
+    <li>This emulator is just a toy project and might have flaws in it.</li>
+    <li>CHIP8 ROMs are taken from the Revival pack extracted by <a
+            href="https://github.com/dmatlack">dmatlack</a> in its <a
+            href="https://github.com/dmatlack/chip8/tree/master/roms">CHIP8
+        Emulator implementation</a>.
+    </li>
+    <li>For anyone wanting to learn Chip8, the <a
+            href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">Cowgod's
+        Chip-8 Technical Reference v1.0 is a very good start</a>.
+    </li>
+</ul>
 
 </body>
 </html>
