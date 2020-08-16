@@ -2,16 +2,25 @@
 
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
 
-Features:
+See the [Online demo of the emulator](https://thomashk0.github.io/chip8-rs-demo/).
 
-* Implements Chip8 ISA
-* `#[no_std]` implementation of the emulator in `packages/chip8`
+## Overview
+
+Project features:
+
+* Emulates the CHIP8 only (not the Super/Mega variants)
+* `#[no_std]` and lightweight implementation of the emulator is provided in the Rust crate `packages/chip8`. The crate is designed to be easily cross-compiled on very constrained platforms.
+* WebAssembly version of the emulator in `app/chip8-wasm`, for running chip8 in a Web browser. The WASM version of the chip8 interpreter fits in less than 4K bytes!
 * Simple OpenGL + SDL2 GUI for running the emulator in `app/chip8-emu`
-* WebAssembly version of the emulator in `app/chip8-wasm`, for running chip8 in the browser :)
 
 ## TODOs
 
-* C bindings + Qt Gui (as a replacement for the chip8-emu)?
+A random list of possible future improvements of the project:
+
+* Build instruction
+* API clean-up and documentation
+* Support CHIP8 variants
+* (Not sure) C bindings + Qt Gui (as a replacement for chip8-emu)?
 * WASM:
     * Configurable keybindings
     * Show CPU state
