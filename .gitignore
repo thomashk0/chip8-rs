@@ -10,3 +10,5 @@ Cargo.lock
 # Wasm stuff
 *.wasm
 *.wat
+
+/app/chip8-wasm/www/roms

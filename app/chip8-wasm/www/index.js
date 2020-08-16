@@ -5,12 +5,11 @@ function loadRomList() {
             const romList = document.getElementById("roms");
             console.log(obj);
             for (var key in obj) {
-                const name = obj[key]["short"];
+                const name = obj[key]["name"];
                 const opt = document.createElement('option')
                 opt.value = key
                 opt.text = name
                 romList.options.add(opt)
-                // romList.append(`<option value='${key}'>${name}</option>`);
             }
         });
 }

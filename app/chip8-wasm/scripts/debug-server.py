@@ -8,8 +8,11 @@ DEFAULT_PORT = 8081
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Debug HTTP server supporting WASM')
-    parser.add_argument('-p', '--port', default=DEFAULT_PORT,
+    parser = argparse.ArgumentParser(
+        description='Debug HTTP server supporting WASM')
+    parser.add_argument('-p',
+                        '--port',
+                        default=DEFAULT_PORT,
                         help='port to be served')
     args = parser.parse_args()
 
@@ -17,7 +20,9 @@ def main():
     handler.extensions_map[".wasm"] = "application/wasm"
 
     with socketserver.TCPServer(("", args.port), handler) as httpd:
-        print(f"info: serving HTTP on port {args.port} (http://localhost:{args.port})")
+        print(
+            f"info: serving HTTP on port {args.port} (http://localhost:{args.port})"
+        )
         httpd.serve_forever()
 
 

@@ -12,9 +12,13 @@ wasm-snip --snip-rust-fmt-code \
     $BINARY
 wasm-strip $BINARY
 
-[ -d www ] || mkdir -p www
-wasm-opt -o www/chip8_wasm.wasm -Oz $BINARY
-wasm2wat -o www/chip8_wasm.wat www/chip8_wasm.wasm
-wasm-objdump -d www/chip8_wasm.wasm > www/chip8_wasm.wasm.txt
+out=www
+[ -d ${out} ] || mkdir -p ${out}
+wasm-opt -o ${out}/chip8_wasm.wasm -Oz $BINARY
+wasm2wat -o ${out}/chip8_wasm.wat ${out}/chip8_wasm.wasm
+wasm-objdump -d ${out}/chip8_wasm.wasm > ${out}/chip8_wasm.wasm.txt
+echo "info: size of chip8_wasm.wasm: $(stat -c %s ${out}/chip8_wasm.wasm) bytes"
 
-echo "Size of chip8_wasm.wasm: $(stat -c %s www/chip8_wasm.wasm) bytes"
+echo "info: regenerating ${out}/roms/index.json"
+[ -d ${out}/roms ] || mkdir -p ${out}/roms
+./scripts/make-index.py -o ${out}/roms/index.json ../../assets/roms
