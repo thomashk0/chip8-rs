@@ -38,6 +38,10 @@ impl Screen {
         &self.fb
     }
 
+    /// Get (width, height)
+    pub fn dims(&self) -> (u32, u32) {
+        (self.width, self.height)
+    }
     pub fn width(&self) -> u32 {
         self.width
     }
@@ -60,37 +64,5 @@ impl Screen {
 
     pub fn clear(&mut self, color: u32) {
         self.fb.iter_mut().for_each(|x| *x = color);
-    }
-
-    #[cfg(feature = "std")]
-    // NOTE: doesn't check points are in bounds...
-    pub fn draw_vline(&mut self, x: f32, y0: f32, y1: f32, color: u32) {
-        let y0 = y0.floor() as u32;
-        let y1 = y1.floor() as u32;
-        let y_min = core::cmp::min(y0, y1);
-        let y_max = core::cmp::max(y0, y1);
-        for y in y_min..y_max {
-            let k = y * self.width + x.floor() as u32;
-            self.fb[k as usize] = color;
-        }
-    }
-
-    #[cfg(feature = "std")]
-    pub fn draw_line(&mut self, x0: f32, y0: f32, x1: f32, y1: f32, color: u32) {
-        if x0 == x1 {
-            self.draw_vline(x0, y0, y1, color);
-            return;
-        }
-        let dx = x1 - x0;
-        let dy = y1 - y0;
-        let step = dx.abs().max(dy.abs());
-        let mut x = x0;
-        let mut y = y0;
-        for _ in 0..(step.floor() as u32) {
-            x += dx / step;
-            y += dy / step;
-            let k = (y.floor() as u32) * self.width + x.floor() as u32;
-            self.fb[k as usize] = color;
-        }
     }
 }

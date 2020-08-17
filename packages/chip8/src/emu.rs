@@ -1,9 +1,9 @@
-use crate::Chip8Cpu;
+use crate::{Chip8Cpu, Pcg32};
 use crate::screen::Screen;
 use crate::keypad::Keypad;
 use crate::cpu::CpuError;
 
-pub const CHIP8_PERIPH_HZ : u32 = 60;
+pub const CHIP8_PERIPH_HZ: u32 = 60;
 
 const SPRITE_DATA: [u8; 80] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0,   // 0
@@ -31,6 +31,7 @@ pub struct Chip8Peripherals {
     pub keypad: Keypad,
     pub delay_timer: u16,
     pub sound_timer: u16,
+    pub rng: Pcg32
 }
 
 impl Chip8Peripherals {
@@ -48,9 +49,11 @@ impl Chip8Peripherals {
             keypad: Keypad::new(),
             delay_timer: 0,
             sound_timer: 0,
+            rng: Pcg32::default()
         }
     }
 
+    // Should be invoked at 60Hz by the scheduler
     pub fn tick(&mut self) {
         if self.delay_timer > 0 {
             self.delay_timer -= 1;
@@ -58,6 +61,10 @@ impl Chip8Peripherals {
         if self.sound_timer > 0 {
             self.sound_timer -= 1;
         }
+    }
+
+    pub fn set_rng_seed(&mut self, seed: u64) {
+        self.rng.reset(seed, 42);
     }
 }
 
@@ -94,12 +101,7 @@ impl Chip8Emulator {
     }
 
     pub fn set_cpu_rng_seed(&mut self, seed: u64) {
-        self.cpu.set_rng_seed(seed);
-    }
-
-    pub fn framebuffer_dims(&self) -> (u32, u32) {
-        let screen = &self.periph.screen;
-        (screen.width(), screen.height())
+        self.periph.set_rng_seed(seed);
     }
 
     pub fn framebuffer(&self) -> &[u32] {
@@ -111,20 +113,28 @@ impl Chip8Emulator {
         self.periph.memory[0x200..0x200 + n].copy_from_slice(data);
     }
 
+    /// Advance the simulation by a given amount of milliseconds
     pub fn advance_ms(&mut self, ms: u32) -> Result<(), CpuError> {
-        let periph_hz = self.periph_hz;
         let cpu_hz = self.cpu_hz;
+        let cpu_steps = cpu_hz * (ms as u32) / 1000;
+        self.tick(cpu_steps as usize)
+    }
+
+    /// Advance the simulation by n ticks (CPU steps). The emulator will
+    /// invoke tick on peripherals if needed.
+    pub fn tick(&mut self, n: usize) -> Result<(), CpuError> {
+        let periph_hz = self.periph_hz;
         let mut t = self.sim_ms;
         {
             let Chip8Emulator { periph, cpu, .. } = self;
-            let cpu_steps = cpu_hz * (ms as u32) / 1000;
-            for _ in 0..cpu_steps {
+
+            for _ in 0..n {
                 cpu.tick(periph)?;
                 t += periph_hz;
                 if t >= self.cpu_hz {
                     periph.tick();
                     t -= self.cpu_hz;
-                }
+                }   
             }
         }
         self.sim_ms = t;

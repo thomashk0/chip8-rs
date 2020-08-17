@@ -7,7 +7,8 @@
 // * https://blog.scottlogic.com/2017/12/13/chip8-emulator-webassembly-rust.html
 use core::convert::TryInto;
 use core::ops::Shl;
-use crate::{Pcg32, Chip8Peripherals};
+
+use crate::Chip8Peripherals;
 
 type Word = u8;
 type Addr = u16;
@@ -203,7 +204,6 @@ pub struct Chip8Cpu {
     stack: [u16; 16],
     pc: Addr,
     sp: Addr,
-    rng: Pcg32,
     cycles: u64,
 }
 
@@ -226,7 +226,6 @@ impl Chip8Cpu {
             reg_i: 0,
             sp: 0,
             stack: [0; 16],
-            rng: Pcg32::default(),
             cycles: 0,
         }
     }
@@ -247,10 +246,6 @@ impl Chip8Cpu {
 
     pub fn write_vf_flag(&mut self, value: bool) {
         self.write_gpr(0xF, bool_to_bit(value));
-    }
-
-    pub fn set_rng_seed(&mut self, seed: u64) {
-        self.rng.reset(seed, 42);
     }
 
     pub fn exec_insn(&mut self, insn: Insn, periph: &mut Chip8Peripherals) -> Result<Option<Addr>, CpuError> {
@@ -336,7 +331,7 @@ impl Chip8Cpu {
                 self.reg_i = self.reg_i.wrapping_add(self.read_gpr(r) as u16);
             }
             Insn::RndAnd(r, value) => {
-                let rnd = self.rng.generate() as u8;
+                let rnd = periph.rng.generate() as u8;
                 self.write_gpr(r, rnd & value);
             }
             Insn::DrawSprite(rx, ry, n) => {

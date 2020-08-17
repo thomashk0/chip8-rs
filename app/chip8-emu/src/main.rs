@@ -88,7 +88,7 @@ fn run_emulator(emu: &mut Chip8Emulator) -> Result<(), Box<dyn std::error::Error
     const WIN_W: u32 = 512;
     const WIN_H: u32 = 256;
 
-    let (emu_w, emu_h) = emu.framebuffer_dims();
+    let (emu_w, emu_h) = emu.peripherals().screen.dims();
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
