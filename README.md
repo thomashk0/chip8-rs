@@ -2,7 +2,7 @@
 
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
 
-See the [Online demo of the emulator](https://thomashk0.github.io/chip8-rs-demo/).
+See the [Online demo of the emulator](https://thomashk0.github.io/chip8_rs_demo.html).
 
 ## Overview
 
